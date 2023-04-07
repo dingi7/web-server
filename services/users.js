@@ -3,12 +3,13 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 
-
 const JWT_SECRET = 'asoiducan93284c9rew';
 const blacklist = [];
 
 async function register(email, name, phoneNumber, password) {
-    const existing = await User.findOne({ email: new RegExp(`^${email}$`, 'i') });
+    const existing = await User.findOne({
+        email: new RegExp(`^${email}$`, 'i'),
+    });
 
     if (existing) {
         throw new Error('Email already exists');
@@ -18,7 +19,7 @@ async function register(email, name, phoneNumber, password) {
         email,
         name,
         phoneNumber,
-        hashedPassword: await bcrypt.hash(password, 10)
+        hashedPassword: await bcrypt.hash(password, 10),
     });
 
     await user.save();
@@ -52,11 +53,14 @@ function createSession(user) {
         phoneNumber: user.phoneNumber,
         autorization: user.autorization,
         _id: user._id,
-        accessToken: jwt.sign({
-            email: user.email,
-            autorization: user.autorization,
-            _id: user._id
-        }, JWT_SECRET)
+        accessToken: jwt.sign(
+            {
+                email: user.email,
+                autorization: user.autorization,
+                _id: user._id,
+            },
+            JWT_SECRET
+        ),
     };
 }
 
@@ -64,14 +68,14 @@ function verifySession(token) {
     if (blacklist.includes(token)) {
         throw new Error('Token is invalidated');
     }
-    
+
     const payload = jwt.verify(token, JWT_SECRET);
-    
+
     return {
         email: payload.email,
         autorization: payload.autorization,
         _id: payload._id,
-        token
+        token,
     };
 }
 
@@ -79,15 +83,45 @@ function getAll() {
     return User.find({}).select('-hashedPassword');
 }
 
-async function authorize(id){
-    const user = await User.findById(id)
-    if(user.autorization === 'User'){
-        user.autorization = 'Admin'
-    }else{
-        user.autorization = 'User'
+async function authorize(id) {
+    const user = await User.findById(id);
+    if (user.autorization === 'User') {
+        user.autorization = 'Admin';
+    } else {
+        user.autorization = 'User';
     }
-    await user.save()
+    await user.save();
     return user;
+}
+
+async function update(id, updatedUser) {
+    const user = await User.findById(id);
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const match = await bcrypt.compare(updatedUser.password, user.hashedPassword);
+
+    if (!match) {
+        throw new Error('Incorrect password!');
+    }
+    // Update user properties
+    user.email = updatedUser.email || user.email;
+    user.name = updatedUser.name || user.name;
+    user.phoneNumber = updatedUser.phoneNumber || user.phoneNumber;
+
+
+    // Save user changes
+    await user.save();
+
+    return {
+        email: user.email,
+        fullName: user.name,
+        phoneNumber: user.phoneNumber,
+        autorization: user.autorization,
+        _id: user._id,
+    };
 }
 
 module.exports = {
@@ -96,5 +130,6 @@ module.exports = {
     logout,
     verifySession,
     getAll,
-    authorize
+    authorize,
+    update
 };
