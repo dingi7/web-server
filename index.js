@@ -13,7 +13,7 @@ start();
 async function start() {
     try {
         mongoose.set('strictQuery', true);
-        await mongoose.connect('mongodb://127.0.0.1:27017/cakeHouse', {
+        await mongoose.connect('mongodb://mongo:ZkBoi3mY7540VHMkFL9D@containers-us-west-133.railway.app:6830', {
             useUnifiedTopology: true,
             useNewUrlParser: true,
         });
