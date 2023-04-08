@@ -8,6 +8,11 @@ router.get('/', isAuthorized(), async (req, res) => {
     res.json(data)
 });
 
+router.get('/statistics', isAuthorized(), async(req,res) =>{
+    const data = await api.getOrderStatistics();
+    res.json(data)
+})
+
 router.get('/user', isAuth(), async (req,res) => {
     const data = await api.getUserOrders(req.user._id)
     res.json(data)
