@@ -7,7 +7,9 @@ const usersController = require('./controllers/users');
 const ordersController = require('./controllers/orders');
 const auth = require('./middlewares/auth');
 
-start();
+
+
+const PORT = process.env.PORT || 3030;
 
 async function start() {
     try {
@@ -34,5 +36,8 @@ async function start() {
         res.json({ message: 'REST service operational' })
     );
 
-    app.listen(3030, () => console.log('REST service started on port 3030'));
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server started on port ${PORT}`);
+    });
 }
+start();
