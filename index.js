@@ -5,6 +5,7 @@ const cors = require('cors');
 const catalogController = require('./controllers/catalog');
 const usersController = require('./controllers/users');
 const ordersController = require('./controllers/orders');
+const emailController = require('./controllers/email')
 const auth = require('./middlewares/auth');
 
 
@@ -35,6 +36,7 @@ async function start() {
     app.use('/data/catalog', catalogController);
     app.use('/orders', ordersController);
     app.use('/users', usersController);
+    app.use('/contact', emailController)
 
     app.get('/', (req, res) =>
         res.json({ message: 'REST service operational' })
