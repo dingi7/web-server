@@ -11,18 +11,18 @@ const auth = require('./middlewares/auth');
 
 const PORT = process.env.PORT || 3030;
 
-export default async function start() {
-    // try {
-    //     mongoose.set('strictQuery', true);
-    //     await mongoose.connect('mongodb://mongo:ZkBoi3mY7540VHMkFL9D@containers-us-west-133.railway.app:6830', {
-    //         useUnifiedTopology: true,
-    //         useNewUrlParser: true,
-    //     });
-    //     console.log('Database ready');
-    // } catch (err) {
-    //     console.error('Database connection failed');
-    //     process.exit(1);
-    // }
+async function start() {
+    try {
+        mongoose.set('strictQuery', true);
+        await mongoose.connect('mongodb+srv://vercel-admin-user-64ea4ff6f90cc0576df2bb2b:0GkehvHbFUNgkEsw@cluster0.wbjudbp.mongodb.net/cakeHouse?retryWrites=true&w=majority', {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+        });
+        console.log('Database ready');
+    } catch (err) {
+        console.error('Database connection failed');
+        process.exit(1);
+    }
 
     const app = express();
     app.use(express.json());
@@ -44,4 +44,5 @@ export default async function start() {
         console.log(`Server started on port ${PORT}`);
     });
 }
-// start();
+
+start()
