@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     });
 
     let info = await transporter.sendMail({
-        from: `${name} <${email}>`, // sender address
+        from: `"${name}" <${email}>`, // sender address
         to: '2023cakehouse@gmail.com', // list of receivers
         subject: 'Contact form message ✔', // Subject line
         text: message, // plain text body
