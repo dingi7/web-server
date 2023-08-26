@@ -5,15 +5,20 @@ const { isAuthorized, isAuth } = require('../middlewares/guards');
 
 router.get('/', isAuthorized(), async (req, res) => {
     const data = await api.getAll();
-    res.json(data)
+    if (data) {
+        res.json(data)
+    }
+    else {
+        res.end()
+    }
 });
 
-router.get('/statistics', isAuthorized(), async(req,res) =>{
+router.get('/statistics', isAuthorized(), async (req, res) => {
     const data = await api.getOrderStatistics();
     res.json(data)
 })
 
-router.get('/user', isAuth(), async (req,res) => {
+router.get('/user', isAuth(), async (req, res) => {
     const data = await api.getUserOrders(req.user._id)
     res.json(data)
 })
