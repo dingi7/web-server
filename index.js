@@ -11,7 +11,7 @@ const auth = require('./middlewares/auth');
 
 const PORT = process.env.PORT || 3030;
 
-async function start() {
+export default async function start() {
     try {
         mongoose.set('strictQuery', true);
         await mongoose.connect('mongodb://mongo:ZkBoi3mY7540VHMkFL9D@containers-us-west-133.railway.app:6830', {
@@ -45,5 +45,3 @@ async function start() {
     });
 }
 start();
-
-module.exports = start
