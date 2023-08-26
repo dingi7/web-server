@@ -44,4 +44,4 @@ export default async function start() {
         console.log(`Server started on port ${PORT}`);
     });
 }
-start();
+// start();
