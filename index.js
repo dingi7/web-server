@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3030;
 async function start() {
     try {
         mongoose.set('strictQuery', true);
-        await mongoose.connect('mongodb+srv://vercel-admin-user-64ea4ff6f90cc0576df2bb2b:0GkehvHbFUNgkEsw@cluster0.wbjudbp.mongodb.net/cakeHouse?retryWrites=true&w=majority', {
+        await mongoose.connect('secret', {
             useUnifiedTopology: true,
             useNewUrlParser: true,
         });
